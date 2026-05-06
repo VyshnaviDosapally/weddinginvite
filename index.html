@@ -4,20 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     
-    <!-- WhatsApp & Social Media Meta Tags -->
     <title>Preethi & Abhilash Reddy | Wedding Invitation</title>
-    <meta name="description" content="💑 You're invited! Preethi & Abhilash Reddy are getting married on May 8, 2026 at 10:38 AM. Join us for Haldi, Pradhanam & Muhurtam ceremonies at HR Function Hall, Sangareddy.">
+    <meta name="description" content="💑 You're invited! Preethi & Abhilash Reddy are getting married on May 8, 2026 at 10:38 AM.">
     
-    <!-- Open Graph Meta Tags (For WhatsApp, Facebook, Instagram) -->
     <meta property="og:title" content="Preethi & Abhilash Reddy | Wedding Invitation">
-    <meta property="og:description" content="💑 We're getting married! Join us on May 8, 2026 at 10:38 AM. Tap to view the full invitation ✨">
+    <meta property="og:description" content="💑 We're getting married! Join us on May 8, 2026 at 10:38 AM.">
     <meta property="og:image" content="https://i.postimg.cc/gkwbLQGw/DPC-0666.jpg">
     <meta property="og:image:width" content="800">
     <meta property="og:image:height" content="800">
     <meta property="og:url" content="https://laxmi-kappa.vercel.app/">
     <meta property="og:type" content="website">
     
-    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Preethi & Abhilash Reddy | Wedding Invitation">
     <meta name="twitter:description" content="You're invited! May 8, 2026 at 10:38 AM">
@@ -162,8 +159,8 @@
     <div class="invitation-wrapper">
         <div class="audio-control" id="audioControl">🔊</div>
         
-        <!-- Thana Pranale Neevani song - PLAYS IMMEDIATELY WHEN SEAL IS TAPPED -->
-        <audio id="bgMusic" loop preload="auto" playsinline>
+        <!-- THANA PRANALE NEEVANI - PRELOADED FOR INSTANT PLAYBACK -->
+        <audio id="bgMusic" loop preload="auto" playsinline muted>
             <source src="https://raw.githubusercontent.com/VyshnaviDosapally/Laxmi/main/Thana-Pranale-Neevani.mp3" type="audio/mpeg">
         </audio>
 
@@ -228,7 +225,6 @@
                     <div class="event-date">🎊 May 8, 2026 • 10:38 AM 🎊</div>
                 </div>
 
-                <!-- WEDDING EVENTS -->
                 <div class="events-section">
                     <div class="events-title">✦ WEDDING EVENTS ✦</div>
                     <div class="event-item"><span class="event-name">Haldi</span><span class="event-time">May 6, 2026 • 6:00 PM</span></div>
@@ -329,15 +325,29 @@
                 }, duration);
             }
 
-            // MUSIC - PLAYS DIRECTLY WHEN SEAL IS TAPPED (NO POPUPS)
+            // FIX: Audio plays instantly when seal is tapped
             const bgMusic = document.getElementById('bgMusic');
             const audioControl = document.getElementById('audioControl');
             let isMusicPlaying = false;
             
-            // Preload audio
-            bgMusic.load();
+            // Force remove muted and play as soon as user interacts
+            function forcePlayAudio() {
+                bgMusic.muted = false;
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    audioControl.innerHTML = '🔊';
+                    console.log('Music playing!');
+                }).catch((error) => {
+                    console.log('Play failed:', error);
+                    // Retry with user gesture
+                    document.body.addEventListener('click', function retry() {
+                        bgMusic.play();
+                        document.body.removeEventListener('click', retry);
+                    }, { once: true });
+                });
+            }
             
-            // Manual control button (optional - user can mute if they want)
+            // Manual control button
             audioControl.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (isMusicPlaying) {
@@ -360,14 +370,8 @@
                 mainContent.classList.add('visible');
                 startConfetti(3200);
                 
-                // PLAY MUSIC DIRECTLY - NO MESSAGES, NO POPUPS
-                bgMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    audioControl.innerHTML = '🔊';
-                }).catch((error) => {
-                    // Silent fail - music button still works if needed
-                    console.log('Audio play failed:', error);
-                });
+                // PLAY MUSIC INSTANTLY - NO EXTRA TAP NEEDED
+                forcePlayAudio();
             }
 
             sealLayer.addEventListener('click', openInvitation);
