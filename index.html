@@ -162,7 +162,7 @@
     <div class="invitation-wrapper">
         <div class="audio-control" id="audioControl">🔊</div>
         
-        <!-- Thana Pranale Neevani song - WILL PLAY AUTOMATICALLY WHEN SEAL IS TAPPED -->
+        <!-- Thana Pranale Neevani song - PLAYS IMMEDIATELY WHEN SEAL IS TAPPED -->
         <audio id="bgMusic" loop preload="auto" playsinline>
             <source src="https://raw.githubusercontent.com/VyshnaviDosapally/Laxmi/main/Thana-Pranale-Neevani.mp3" type="audio/mpeg">
         </audio>
@@ -329,20 +329,15 @@
                 }, duration);
             }
 
-            // MUSIC PLAYER - WILL PLAY IMMEDIATELY WHEN SEAL IS TAPPED
+            // MUSIC - PLAYS DIRECTLY WHEN SEAL IS TAPPED (NO POPUPS)
             const bgMusic = document.getElementById('bgMusic');
             const audioControl = document.getElementById('audioControl');
             let isMusicPlaying = false;
             
-            // Preload and prepare audio
+            // Preload audio
             bgMusic.load();
             
-            // Make sure audio is ready to play
-            bgMusic.addEventListener('canplaythrough', function() {
-                console.log('Audio ready to play');
-            });
-            
-            // Optional manual control (visible but users rarely need it)
+            // Manual control button (optional - user can mute if they want)
             audioControl.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (isMusicPlaying) {
@@ -353,7 +348,7 @@
                     bgMusic.play().then(() => {
                         audioControl.innerHTML = '🔊';
                         isMusicPlaying = true;
-                    }).catch(e => console.log('Play failed:', e));
+                    }).catch(e => console.log('Play failed'));
                 }
             });
 
@@ -365,31 +360,13 @@
                 mainContent.classList.add('visible');
                 startConfetti(3200);
                 
-                // PLAY MUSIC DIRECTLY - THIS IS THE USER INTERACTION THAT BROWSERS ALLOW
+                // PLAY MUSIC DIRECTLY - NO MESSAGES, NO POPUPS
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
                     audioControl.innerHTML = '🔊';
-                    console.log('Music playing!');
                 }).catch((error) => {
-                    console.log('Auto-play error:', error);
-                    // Show subtle hint only if needed
-                    setTimeout(() => {
-                        const hint = document.createElement('div');
-                        hint.textContent = '🎵 Tap the music icon to play';
-                        hint.style.position = 'fixed';
-                        hint.style.bottom = '70px';
-                        hint.style.left = '50%';
-                        hint.style.transform = 'translateX(-50%)';
-                        hint.style.background = '#2c1810';
-                        hint.style.color = '#ffd700';
-                        hint.style.padding = '6px 12px';
-                        hint.style.borderRadius = '30px';
-                        hint.style.fontSize = '0.6rem';
-                        hint.style.zIndex = '1000';
-                        hint.style.whiteSpace = 'nowrap';
-                        document.body.appendChild(hint);
-                        setTimeout(() => hint.remove(), 3000);
-                    }, 1000);
+                    // Silent fail - music button still works if needed
+                    console.log('Audio play failed:', error);
                 });
             }
 
