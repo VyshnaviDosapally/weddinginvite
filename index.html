@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     
-    <!-- WhatsApp & Social Media Meta Tags - NOW USING YOUR FIRST SLIDESHOW PHOTO -->
+    <!-- WhatsApp & Social Media Meta Tags -->
     <title>Preethi & Abhilash Reddy | Wedding Invitation</title>
     <meta name="description" content="💑 You're invited! Preethi & Abhilash Reddy are getting married on May 8, 2026 at 10:38 AM. Join us for Haldi, Pradhanam & Muhurtam ceremonies at HR Function Hall, Sangareddy.">
     
@@ -162,8 +162,8 @@
     <div class="invitation-wrapper">
         <div class="audio-control" id="audioControl">🔊</div>
         
-        <!-- Thana Pranale Neevani song -->
-        <audio id="bgMusic" loop preload="auto">
+        <!-- Thana Pranale Neevani song - WILL PLAY AUTOMATICALLY WHEN SEAL IS TAPPED -->
+        <audio id="bgMusic" loop preload="auto" playsinline>
             <source src="https://raw.githubusercontent.com/VyshnaviDosapally/Laxmi/main/Thana-Pranale-Neevani.mp3" type="audio/mpeg">
         </audio>
 
@@ -329,12 +329,20 @@
                 }, duration);
             }
 
+            // MUSIC PLAYER - WILL PLAY IMMEDIATELY WHEN SEAL IS TAPPED
             const bgMusic = document.getElementById('bgMusic');
             const audioControl = document.getElementById('audioControl');
             let isMusicPlaying = false;
             
+            // Preload and prepare audio
             bgMusic.load();
             
+            // Make sure audio is ready to play
+            bgMusic.addEventListener('canplaythrough', function() {
+                console.log('Audio ready to play');
+            });
+            
+            // Optional manual control (visible but users rarely need it)
             audioControl.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (isMusicPlaying) {
@@ -357,11 +365,31 @@
                 mainContent.classList.add('visible');
                 startConfetti(3200);
                 
+                // PLAY MUSIC DIRECTLY - THIS IS THE USER INTERACTION THAT BROWSERS ALLOW
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
                     audioControl.innerHTML = '🔊';
+                    console.log('Music playing!');
                 }).catch((error) => {
-                    console.log('Auto-play prevented:', error);
+                    console.log('Auto-play error:', error);
+                    // Show subtle hint only if needed
+                    setTimeout(() => {
+                        const hint = document.createElement('div');
+                        hint.textContent = '🎵 Tap the music icon to play';
+                        hint.style.position = 'fixed';
+                        hint.style.bottom = '70px';
+                        hint.style.left = '50%';
+                        hint.style.transform = 'translateX(-50%)';
+                        hint.style.background = '#2c1810';
+                        hint.style.color = '#ffd700';
+                        hint.style.padding = '6px 12px';
+                        hint.style.borderRadius = '30px';
+                        hint.style.fontSize = '0.6rem';
+                        hint.style.zIndex = '1000';
+                        hint.style.whiteSpace = 'nowrap';
+                        document.body.appendChild(hint);
+                        setTimeout(() => hint.remove(), 3000);
+                    }, 1000);
                 });
             }
 
