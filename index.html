@@ -3,7 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    
+    <!-- WhatsApp & Social Media Meta Tags - NOW USING YOUR FIRST SLIDESHOW PHOTO -->
     <title>Preethi & Abhilash Reddy | Wedding Invitation</title>
+    <meta name="description" content="💑 You're invited! Preethi & Abhilash Reddy are getting married on May 8, 2026 at 10:38 AM. Join us for Haldi, Pradhanam & Muhurtam ceremonies at HR Function Hall, Sangareddy.">
+    
+    <!-- Open Graph Meta Tags (For WhatsApp, Facebook, Instagram) -->
+    <meta property="og:title" content="Preethi & Abhilash Reddy | Wedding Invitation">
+    <meta property="og:description" content="💑 We're getting married! Join us on May 8, 2026 at 10:38 AM. Tap to view the full invitation ✨">
+    <meta property="og:image" content="https://i.postimg.cc/gkwbLQGw/DPC-0666.jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="800">
+    <meta property="og:url" content="https://laxmi-kappa.vercel.app/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Preethi & Abhilash Reddy | Wedding Invitation">
+    <meta name="twitter:description" content="You're invited! May 8, 2026 at 10:38 AM">
+    <meta name="twitter:image" content="https://i.postimg.cc/gkwbLQGw/DPC-0666.jpg">
+    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,7 +41,6 @@
         .invite-text { font-family: 'Playfair Display', serif; font-size: 1.3rem; letter-spacing: 4px; margin: 1rem 0; color: #8B4513; font-weight: 400; }
         .tap-instruction { font-size: 0.7rem; opacity: 0.5; margin-top: 1.5rem; letter-spacing: 1px; }
 
-        /* Audio control button - hidden but functional */
         .audio-control {
             position: fixed; bottom: 20px; right: 20px; z-index: 200; background: #2c1810; color: #f5f0eb;
             width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -104,7 +122,6 @@
         .dot { height: 6px; width: 24px; margin: 0 4px; background-color: #d4c5b0; display: inline-block; cursor: pointer; border-radius: 3px; transition: 0.2s; }
         .dot.active { background-color: #c97e1a; width: 32px; }
 
-        /* Events section - Mehendi removed */
         .events-section { margin: 2rem 0; }
         .events-title { text-align: center; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 1.5rem; color: #c9a87b; }
         .event-item { display: flex; justify-content: space-between; align-items: baseline; padding: 0.8rem 0; border-bottom: 1px solid #e8dfd4; }
@@ -143,10 +160,9 @@
 <body>
     <canvas id="confetti-canvas"></canvas>
     <div class="invitation-wrapper">
-        <!-- Hidden audio control button (visible but subtle) -->
         <div class="audio-control" id="audioControl">🔊</div>
         
-        <!-- NEW SONG: Thana Pranale Neevani - plays automatically when seal is opened -->
+        <!-- Thana Pranale Neevani song -->
         <audio id="bgMusic" loop preload="auto">
             <source src="https://raw.githubusercontent.com/VyshnaviDosapally/Laxmi/main/Thana-Pranale-Neevani.mp3" type="audio/mpeg">
         </audio>
@@ -212,7 +228,7 @@
                     <div class="event-date">🎊 May 8, 2026 • 10:38 AM 🎊</div>
                 </div>
 
-                <!-- WEDDING EVENTS - MEHENDI REMOVED -->
+                <!-- WEDDING EVENTS -->
                 <div class="events-section">
                     <div class="events-title">✦ WEDDING EVENTS ✦</div>
                     <div class="event-item"><span class="event-name">Haldi</span><span class="event-time">May 6, 2026 • 6:00 PM</span></div>
@@ -313,15 +329,12 @@
                 }, duration);
             }
 
-            // NEW SONG: Thana Pranale Neevani (962 KB - very fast!)
             const bgMusic = document.getElementById('bgMusic');
             const audioControl = document.getElementById('audioControl');
             let isMusicPlaying = false;
             
-            // Preload the song
             bgMusic.load();
             
-            // Optional manual control (visible but users may not need it)
             audioControl.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (isMusicPlaying) {
@@ -344,14 +357,11 @@
                 mainContent.classList.add('visible');
                 startConfetti(3200);
                 
-                // PLAY SONG DIRECTLY - NO EXTRA TAP NEEDED
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
                     audioControl.innerHTML = '🔊';
-                    console.log('Thana Pranale Neevani playing!');
                 }).catch((error) => {
-                    console.log('Auto-play prevented by browser:', error);
-                    // Silent fallback - the music button is still there if needed
+                    console.log('Auto-play prevented:', error);
                 });
             }
 
