@@ -159,8 +159,8 @@
     <div class="invitation-wrapper">
         <div class="audio-control" id="audioControl">🔊</div>
         
-        <!-- THANA PRANALE NEEVANI - PRELOADED FOR INSTANT PLAYBACK -->
-        <audio id="bgMusic" loop preload="auto" playsinline muted>
+        <!-- THANA PRANALE NEEVANI - MOBILE FIXED -->
+        <audio id="bgMusic" loop preload="auto">
             <source src="https://raw.githubusercontent.com/VyshnaviDosapally/Laxmi/main/Thana-Pranale-Neevani.mp3" type="audio/mpeg">
         </audio>
 
@@ -325,25 +325,23 @@
                 }, duration);
             }
 
-            // FIX: Audio plays instantly when seal is tapped
+            // MOBILE FIX: Audio plays instantly on seal tap
             const bgMusic = document.getElementById('bgMusic');
             const audioControl = document.getElementById('audioControl');
             let isMusicPlaying = false;
             
-            // Force remove muted and play as soon as user interacts
-            function forcePlayAudio() {
-                bgMusic.muted = false;
+            // Preload audio
+            bgMusic.load();
+            
+            // Play function that works on both mobile and desktop
+            function playMusic() {
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
                     audioControl.innerHTML = '🔊';
-                    console.log('Music playing!');
+                    console.log('Music playing on mobile!');
                 }).catch((error) => {
-                    console.log('Play failed:', error);
-                    // Retry with user gesture
-                    document.body.addEventListener('click', function retry() {
-                        bgMusic.play();
-                        document.body.removeEventListener('click', retry);
-                    }, { once: true });
+                    console.log('Playback failed:', error);
+                    // Fallback: show mute/unmute button only
                 });
             }
             
@@ -355,10 +353,7 @@
                     audioControl.innerHTML = '🔇';
                     isMusicPlaying = false;
                 } else {
-                    bgMusic.play().then(() => {
-                        audioControl.innerHTML = '🔊';
-                        isMusicPlaying = true;
-                    }).catch(e => console.log('Play failed'));
+                    playMusic();
                 }
             });
 
@@ -370,8 +365,11 @@
                 mainContent.classList.add('visible');
                 startConfetti(3200);
                 
-                // PLAY MUSIC INSTANTLY - NO EXTRA TAP NEEDED
-                forcePlayAudio();
+                // Play music - this runs directly from the tap event
+                // This satisfies mobile browser requirements
+                setTimeout(() => {
+                    playMusic();
+                }, 100);
             }
 
             sealLayer.addEventListener('click', openInvitation);
